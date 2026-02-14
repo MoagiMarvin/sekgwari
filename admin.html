@@ -188,6 +188,52 @@
             color: var(--gray-500);
         }
 
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            transition: var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .hero-preview {
+            width: 100%;
+            height: 200px;
+            background: var(--gray-100);
+            border-radius: var(--radius-lg);
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px dashed var(--gray-300);
+        }
+
+        .hero-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         @media (max-width: 1024px) {
             .sidebar {
                 width: 80px;
@@ -229,6 +275,12 @@
                 <a href="#" class="nav-link active">
                     <span class="icon">📊</span>
                     <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('homepage')">
+                    <span class="icon">🏠</span>
+                    <span>Homepage</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -331,8 +383,53 @@
                         <h3>Post News</h3>
                         <p>Share school announcements</p>
                     </button>
+                    <button onclick="showSection('homepage')" class="action-card"
+                        style="width: 100%; cursor: pointer; border: none; font-family: inherit;">
+                        <span>🏠</span>
+                        <h3>Edit Homepage</h3>
+                        <p>Change hero image and text</p>
+                    </button>
                 </div>
             </section>
+        </div>
+
+        <!-- Homepage Management Section -->
+        <div id="homepageSection" class="content-section" style="display: none;">
+            <form action="update_homepage.php" method="POST" enctype="multipart/form-data">
+                <div class="header-actions" style="margin-bottom: 2rem;">
+                    <h2>Homepage Management</h2>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3 style="margin-bottom: 1.5rem;">Hero Section</h3>
+                        <div class="form-group">
+                            <label class="form-label">Hero Title</label>
+                            <input type="text" name="hero_title" id="heroTitle" class="form-input"
+                                value="Welcome to Sekgwari Primary School">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Hero Subtitle</label>
+                            <textarea name="hero_subtitle" id="heroSubtitle" class="form-input"
+                                rows="3">Nurturing Excellence in Education in Gamatlala</textarea>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 style="margin-bottom: 1.5rem;">Hero Background</h3>
+                        <div class="form-group">
+                            <label class="form-label">Upload Hero Photo</label>
+                            <input type="file" name="hero_image" id="heroImageInput" class="form-input" accept="image/*"
+                                onchange="previewHeroImage(this)">
+                            <p style="font-size: 0.8rem; color: var(--gray-500); margin-top: 0.5rem;">
+                                Recommended size: 1920x1080px. Max size: 5MB.
+                            </p>
+                        </div>
+                        <div class="hero-preview" id="heroPreview">
+                            <span style="color: var(--gray-400);">No image selected (Using blue gradient)</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <!-- Staff Management Section -->
@@ -452,7 +549,8 @@
                 'staff': 'Manage Staff',
                 'contacts': 'School Contacts',
                 'gallery': 'Image Gallery',
-                'news': 'News & Announcements'
+                'news': 'News & Announcements',
+                'homepage': 'Homepage Management'
             };
 
             const titleH1 = document.querySelector('#pageTitle h1');
@@ -477,17 +575,55 @@
 
         // Initialize with dashboard
         document.addEventListener('DOMContentLoaded', () => {
+            // Check for URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            const section = urlParams.get('section');
+
+            if (status === 'success') {
+                alert('Changes saved successfully!');
+            }
+
+            if (section) {
+                showSection(section);
+            }
+
             // Link sidebar clicks
             document.querySelectorAll('.nav-link').forEach(link => {
-                const section = link.querySelector('span:last-child').textContent.toLowerCase();
-                if (section !== 'logout') {
+                const sectionName = link.querySelector('span:last-child').textContent.toLowerCase();
+                if (sectionName !== 'logout') {
                     link.onclick = (e) => {
                         e.preventDefault();
-                        showSection(section);
+                        showSection(sectionName);
                     };
                 }
             });
         });
+
+        function previewHeroImage(input) {
+            const preview = document.getElementById('heroPreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Hero Preview">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveHeroSettings() {
+            // This will be implemented with PHP/Backend
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert('Success! Hero settings have been saved (Simulation). In a real environment, this would call update_settings.php');
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 1000);
+        }
     </script>
 </body>
 
