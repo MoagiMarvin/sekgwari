@@ -1,3 +1,16 @@
+<?php
+require_once 'db_config.php';
+
+// Fetch stats for dashboard
+$staff_count = $conn->query("SELECT COUNT(*) FROM staff")->fetch_row()[0];
+$gallery_count = $conn->query("SELECT COUNT(*) FROM gallery")->fetch_row()[0];
+
+// Fetch staff members
+$staff_members = $conn->query("SELECT * FROM staff ORDER BY id DESC");
+
+// Fetch gallery items
+$gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -337,21 +350,21 @@
                     <div class="stat-icon" style="color: var(--primary-blue);">👨‍🏫</div>
                     <div class="stat-info">
                         <h4>Staff Members</h4>
-                        <div class="stat-value">8</div>
+                        <div class="stat-value"><?php echo $staff_count; ?></div>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="color: var(--accent-gold);">📸</div>
                     <div class="stat-info">
                         <h4>Gallery Images</h4>
-                        <div class="stat-value">24</div>
+                        <div class="stat-value"><?php echo $gallery_count; ?></div>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="color: var(--primary-navy);">📬</div>
                     <div class="stat-info">
                         <h4>New Inquiries</h4>
-                        <div class="stat-value">12</div>
+                        <div class="stat-value">0</div>
                     </div>
                 </div>
             </div>
@@ -495,25 +508,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="border-bottom: 1px solid var(--gray-100);">
-                            <td style="padding: 1rem;">
-                                <div
-                                    style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center;">
-                                    👤</div>
-                            </td>
-                            <td style="padding: 1rem;"><strong>Mrs. Sekgwari</strong></td>
-                            <td style="padding: 1rem;"><span class="staff-position"
-                                    style="font-size: 0.75rem; padding: 0.25rem 0.5rem; margin: 0;">Principal</span>
-                            </td>
-                            <td style="padding: 1rem;">Leadership</td>
-                            <td style="padding: 1rem;">
-                                <button
-                                    style="background: none; border: none; color: var(--primary-blue); cursor: pointer; font-weight: 600;">Edit</button>
-                                <button
-                                    style="background: none; border: none; color: var(--accent-red); cursor: pointer; font-weight: 600; margin-left: 1rem;">Delete</button>
-                            </td>
-                        </tr>
-                        <!-- Repeat for other teachers -->
+                        <?php if ($staff_members->num_rows > 0): ?>
+                            <?php while($row = $staff_members->fetch_assoc()): ?>
+                            <tr style="border-bottom: 1px solid var(--gray-100);">
+                                <td style="padding: 1rem;">
+                                    <?php if ($row['image_path']): ?>
+                                        <img src="<?php echo $row['image_path']; ?>" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                                    <?php else: ?>
+                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center;">👤</div>
+                                    <?php endif; ?>
+                                </td>
+                                <td style="padding: 1rem;"><strong><?php echo htmlspecialchars($row['name']); ?></strong></td>
+                                <td style="padding: 1rem;"><span class="staff-position" style="font-size: 0.75rem; padding: 0.25rem 0.5rem; margin: 0;"><?php echo htmlspecialchars($row['position']); ?></span></td>
+                                <td style="padding: 1rem;"><?php echo htmlspecialchars($row['grade']); ?></td>
+                                <td style="padding: 1rem;">
+                                    <a href="delete_item.php?type=staff&id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this staff member?')" style="color: var(--accent-red); text-decoration: none; font-weight: 600;">Delete</a>
+                                </td>
+                            </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5" style="padding: 2rem; text-align: center; color: var(--gray-500);">No staff members added yet.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -594,13 +611,17 @@
 
             <div class="card">
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
-                    <div
-                        style="aspect-ratio: 1/1; background: var(--gray-100); border-radius: var(--radius-md); position: relative; overflow: hidden; border: 2px solid var(--gray-200);">
-                        <div
-                            style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">
-                            ✕</div>
-                    </div>
-                    <!-- Gallery Items -->
+                    <?php if ($gallery_items->num_rows > 0): ?>
+                        <?php while($row = $gallery_items->fetch_assoc()): ?>
+                        <div style="aspect-ratio: 1/1; background: var(--gray-100); border-radius: var(--radius-md); position: relative; overflow: hidden; border: 2px solid var(--gray-200);">
+                            <img src="<?php echo $row['image_path']; ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <a href="delete_item.php?type=gallery&id=<?php echo $row['id']; ?>" onclick="return confirm('Delete this image?')"
+                                style="position: absolute; top: 5px; right: 5px; background: rgba(220, 38, 38, 0.8); color: white; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 0.75rem; cursor: pointer; text-decoration: none;">✕</a>
+                        </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <div style="grid-column: 1 / -1; padding: 2rem; text-align: center; color: var(--gray-500);">No gallery images uploaded yet.</div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

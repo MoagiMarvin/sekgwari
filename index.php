@@ -49,7 +49,8 @@ $hero_image = isset($settings['hero_image']) ? $settings['hero_image'] : '';
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.php" class="active">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="staff.html">Staff</a></li>
+                <li><a href="staff.php">Staff</a></li>
+                <li><a href="gallery.php">Gallery</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
@@ -216,7 +217,8 @@ $hero_image = isset($settings['hero_image']) ? $settings['hero_image'] : '';
                 <h3>Quick Links</h3>
                 <a href="index.php">Home</a>
                 <a href="about.html">About Us</a>
-                <a href="staff.html">Our Staff</a>
+                <a href="staff.php">Our Staff</a>
+                <a href="gallery.php">Gallery</a>
                 <a href="contact.html">Contact</a>
             </div>
 
