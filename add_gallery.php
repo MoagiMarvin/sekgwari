@@ -27,17 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param("ss", $image_path, $caption);
         
         if ($stmt->execute()) {
-            header("Location: admin.html?section=gallery&status=success");
+            header("Location: admin.php?section=gallery&status=success");
         } else {
-            header("Location: admin.html?section=gallery&status=error");
+            header("Location: admin.php?section=gallery&status=error");
         }
         $stmt->close();
     } else {
-        header("Location: admin.html?section=gallery&status=no_image");
+        header("Location: admin.php?section=gallery&status=no_image");
     }
     exit();
 } else {
-    header("Location: admin.html");
+    header("Location: admin.php");
     exit();
 }
 ?>

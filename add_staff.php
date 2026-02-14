@@ -31,15 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssssss", $name, $position, $qualification, $grade, $message, $image_path);
     
     if ($stmt->execute()) {
-        header("Location: admin.html?section=staff&status=success");
+        header("Location: admin.php?section=staff&status=success");
     } else {
-        header("Location: admin.html?section=staff&status=error");
+        header("Location: admin.php?section=staff&status=error");
     }
     
     $stmt->close();
     exit();
 } else {
-    header("Location: admin.html");
+    header("Location: admin.php");
     exit();
 }
 ?>

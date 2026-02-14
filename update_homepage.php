@@ -41,10 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Redirect back to admin with success message
-    header("Location: admin.html?section=homepage&status=success");
+    header("Location: admin.php?section=homepage&status=success");
     exit();
 } else {
-    header("Location: admin.html");
+    header("Location: admin.php");
     exit();
 }
 ?>
