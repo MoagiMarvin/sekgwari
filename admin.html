@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sekgwari Primary School</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+        }
+
+        body {
+            background-color: var(--bg-gray);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-navy);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 0;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            padding: 0 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.875rem 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background: var(--primary-blue);
+        }
+
+        .sidebar-footer {
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 2.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 100px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background: var(--bg-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-info h4 {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+        }
+
+        .quick-actions {
+            margin-top: 3rem;
+        }
+
+        .action-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            text-decoration: none;
+            color: var(--primary-navy);
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-blue);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-card span {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .action-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 1rem 0;
+            }
+
+            .sidebar-logo span,
+            .nav-link span,
+            .sidebar-footer span {
+                display: none;
+            }
+
+            .sidebar-logo {
+                padding: 0;
+                justify-content: center;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+
+            .nav-link {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">🎓</div>
+            <span>Admin Panel</span>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon">👥</span>
+                    <span>Staff</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon">📞</span>
+                    <span>Contacts</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon">🖼️</span>
+                    <span>Gallery</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon">📰</span>
+                    <span>News</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a href="login.html" class="nav-link" style="color: #ef4444;">
+                <span class="icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header-actions">
+            <div id="pageTitle">
+                <h1 class="animate-fadeIn">Welcome, Principal</h1>
+                <p class="animate-fadeIn stagger-1">Manage your school website content from here.</p>
+            </div>
+            <div class="user-profile">
+                <span>Principal Sekgwari</span>
+                <span style="font-size: 1.5rem;">👩‍🏫</span>
+            </div>
+        </header>
+
+        <!-- Dashboard Home Content -->
+        <div id="dashboardSection" class="content-section">
+            <div class="dashboard-grid animate-fadeInUp stagger-2">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--primary-blue);">👨‍🏫</div>
+                    <div class="stat-info">
+                        <h4>Staff Members</h4>
+                        <div class="stat-value">8</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--accent-gold);">📸</div>
+                    <div class="stat-info">
+                        <h4>Gallery Images</h4>
+                        <div class="stat-value">24</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--primary-navy);">📬</div>
+                    <div class="stat-info">
+                        <h4>New Inquiries</h4>
+                        <div class="stat-value">12</div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="quick-actions">
+                <h2 class="animate-fadeInUp stagger-3">Quick Management</h2>
+                <div class="action-list animate-fadeInUp stagger-4">
+                    <button onclick="showSection('staff')" class="action-card"
+                        style="width: 100%; cursor: pointer; border: none; font-family: inherit;">
+                        <span>➕</span>
+                        <h3>Add Teacher</h3>
+                        <p>Register a new staff member</p>
+                    </button>
+                    <button onclick="showSection('contacts')" class="action-card"
+                        style="width: 100%; cursor: pointer; border: none; font-family: inherit;">
+                        <span>✏️</span>
+                        <h3>Update Info</h3>
+                        <p>Change contact or school hours</p>
+                    </button>
+                    <button onclick="showSection('gallery')" class="action-card"
+                        style="width: 100%; cursor: pointer; border: none; font-family: inherit;">
+                        <span>📤</span>
+                        <h3>Upload Photos</h3>
+                        <p>Add news photos to the gallery</p>
+                    </button>
+                    <button onclick="showSection('news')" class="action-card"
+                        style="width: 100%; cursor: pointer; border: none; font-family: inherit;">
+                        <span>📣</span>
+                        <h3>Post News</h3>
+                        <p>Share school announcements</p>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Staff Management Section -->
+        <div id="staffSection" class="content-section" style="display: none;">
+            <div class="header-actions" style="margin-bottom: 2rem;">
+                <h2>Manage Staff</h2>
+                <button class="btn btn-primary">Add New Teacher</button>
+            </div>
+            <div class="card">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--gray-100); color: var(--gray-500);">
+                            <th style="padding: 1rem;">Photo</th>
+                            <th style="padding: 1rem;">Name</th>
+                            <th style="padding: 1rem;">Position</th>
+                            <th style="padding: 1rem;">Grade/Subject</th>
+                            <th style="padding: 1rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--gray-100);">
+                            <td style="padding: 1rem;">
+                                <div
+                                    style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center;">
+                                    👤</div>
+                            </td>
+                            <td style="padding: 1rem;"><strong>Mrs. Sekgwari</strong></td>
+                            <td style="padding: 1rem;"><span class="staff-position"
+                                    style="font-size: 0.75rem; padding: 0.25rem 0.5rem; margin: 0;">Principal</span>
+                            </td>
+                            <td style="padding: 1rem;">Leadership</td>
+                            <td style="padding: 1rem;">
+                                <button
+                                    style="background: none; border: none; color: var(--primary-blue); cursor: pointer; font-weight: 600;">Edit</button>
+                                <button
+                                    style="background: none; border: none; color: var(--accent-red); cursor: pointer; font-weight: 600; margin-left: 1rem;">Delete</button>
+                            </td>
+                        </tr>
+                        <!-- Repeat for other teachers -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Contacts Management Section -->
+        <div id="contactsSection" class="content-section" style="display: none;">
+            <div class="header-actions" style="margin-bottom: 2rem;">
+                <h2>School Information & Contacts</h2>
+                <button class="btn btn-primary">Save Changes</button>
+            </div>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3 style="margin-bottom: 1.5rem;">General Contact Info</h3>
+                    <div class="form-group">
+                        <label class="form-label">School Phone Number</label>
+                        <input type="text" class="form-input" value="+27 XX XXX XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" value="info@sekgwariprimary.co.za">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Physical Address</label>
+                        <textarea class="form-input" rows="3">Gamatlala, Limpopo</textarea>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 1.5rem;">Operating Hours</h3>
+                    <div class="form-group">
+                        <label class="form-label">Monday - Friday</label>
+                        <input type="text" class="form-input" value="7:30 AM - 2:00 PM">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Special Announcement (Top Bar)</label>
+                        <input type="text" class="form-input" placeholder="e.g. 📚 Learning Never Stops">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Management Section -->
+        <div id="gallerySection" class="content-section" style="display: none;">
+            <div class="header-actions" style="margin-bottom: 2rem;">
+                <h2>Image Gallery</h2>
+                <button class="btn btn-primary">Upload New Images</button>
+            </div>
+            <div class="card">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
+                    <div
+                        style="aspect-ratio: 1/1; background: var(--gray-100); border-radius: var(--radius-md); position: relative; overflow: hidden; border: 2px solid var(--gray-200);">
+                        <div
+                            style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">
+                            ✕</div>
+                    </div>
+                    <!-- Gallery Items -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(sectionId + 'Section');
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+
+            // Update Page Title
+            const titleMap = {
+                'dashboard': 'Dashboard',
+                'staff': 'Manage Staff',
+                'contacts': 'School Contacts',
+                'gallery': 'Image Gallery',
+                'news': 'News & Announcements'
+            };
+
+            const titleH1 = document.querySelector('#pageTitle h1');
+            const titleP = document.querySelector('#pageTitle p');
+
+            if (sectionId === 'dashboard') {
+                titleH1.textContent = 'Welcome, Principal';
+                titleP.textContent = 'Manage your school website content from here.';
+            } else {
+                titleH1.textContent = titleMap[sectionId] || 'Management';
+                titleP.textContent = 'Review and update your school information.';
+            }
+
+            // Update Sidebar Active State
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.textContent.toLowerCase().includes(sectionId)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Initialize with dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            // Link sidebar clicks
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const section = link.querySelector('span:last-child').textContent.toLowerCase();
+                if (section !== 'logout') {
+                    link.onclick = (e) => {
+                        e.preventDefault();
+                        showSection(section);
+                    };
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
