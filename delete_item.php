@@ -44,6 +44,26 @@ if (isset($_GET['type']) && isset($_GET['id'])) {
         $stmt->execute();
         $stmt->close();
         header("Location: admin.php?section=gallery&status=success");
+        
+    } elseif ($type === 'news') {
+        // Fetch image path to delete file
+        $stmt = $conn->prepare("SELECT image_path FROM news_events WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            if ($row['image_path'] && file_exists($row['image_path'])) {
+                unlink($row['image_path']);
+            }
+        }
+        $stmt->close();
+
+        // Delete from DB
+        $stmt = $conn->prepare("DELETE FROM news_events WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        header("Location: admin.php?section=news&status=success");
     }
     exit();
 } else {

@@ -1,6 +1,15 @@
 <?php
 require_once 'db_config.php';
 
+// Fetch settings
+$settings = [];
+$result = $conn->query("SELECT setting_key, setting_value FROM site_settings");
+if ($result && $result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $settings[$row['setting_key']] = $row['setting_value'];
+    }
+}
+
 // Fetch all staff members
 $staff_members = $conn->query("SELECT * FROM staff ORDER BY id ASC");
 ?>
@@ -30,10 +39,10 @@ $staff_members = $conn->query("SELECT * FROM staff ORDER BY id ASC");
             </div>
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.php">Home</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="about.php">About</a></li>
                 <li><a href="staff.php" class="active">Staff</a></li>
                 <li><a href="gallery.php">Gallery</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="contact.php">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -90,7 +99,7 @@ $staff_members = $conn->query("SELECT * FROM staff ORDER BY id ASC");
                 <p class="section-subtitle">Are you a passionate educator looking to make a difference? We're always
                     looking for talented individuals to join our school family.</p>
                 <div style="margin-top: 2rem;">
-                    <a href="contact.html" class="btn btn-primary">Get In Touch</a>
+                    <a href="contact.php" class="btn btn-primary">Get In Touch</a>
                 </div>
             </div>
         </div>
@@ -113,24 +122,23 @@ $staff_members = $conn->query("SELECT * FROM staff ORDER BY id ASC");
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <a href="index.php">Home</a>
-                <a href="about.html">About Us</a>
+                <a href="about.php">About Us</a>
                 <a href="staff.php">Our Staff</a>
                 <a href="gallery.php">Gallery</a>
-                <a href="contact.html">Contact</a>
+                <a href="contact.php">Contact</a>
             </div>
 
             <div class="footer-section">
                 <h3>Contact Info</h3>
-                <p>📍 Gamatlala, Limpopo</p>
-                <p>📞 +27 XX XXX XXXX</p>
-                <p>✉️ info@sekgwariprimary.co.za</p>
+                <p>📍 <?php echo htmlspecialchars($settings['school_address'] ?? 'Gamatlala, Limpopo'); ?></p>
+                <p>📞 <?php echo htmlspecialchars($settings['school_phone'] ?? '+27 XX XXX XXXX'); ?></p>
+                <p>✉️ <?php echo htmlspecialchars($settings['school_email'] ?? 'info@sekgwariprimary.co.za'); ?></p>
             </div>
 
             <div class="footer-section">
                 <h3>School Hours</h3>
-                <p>Monday - Friday</p>
-                <p>7:30 AM - 2:00 PM</p>
-                <p style="margin-top: 1rem; color: #f59e0b;">📚 Learning Never Stops</p>
+                <p><?php echo htmlspecialchars($settings['operating_hours'] ?? 'Monday - Friday 7:30 AM - 2:00 PM'); ?></p>
+                <p style="margin-top: 1rem; color: #f59e0b;"><?php echo htmlspecialchars($settings['school_tagline'] ?? '📚 Learning Never Stops'); ?></p>
             </div>
         </div>
 

@@ -1,3 +1,15 @@
+<?php
+require_once 'db_config.php';
+
+// Fetch settings
+$settings = [];
+$result = $conn->query("SELECT setting_key, setting_value FROM site_settings");
+if ($result && $result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $settings[$row['setting_key']] = $row['setting_value'];
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,9 +19,6 @@
     <meta name="description" content="Contact Sekgwari Primary School - Get in touch with us">
     <title>Contact Us - Sekgwari Primary School</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/config.js"></script>
 </head>
 
 <body>
@@ -26,11 +35,11 @@
                 <span></span>
             </div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="staff.html">Staff</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="about.php">About</a></li>
+                <li><a href="staff.php">Staff</a></li>
+                <li><a href="gallery.php">Gallery</a></li>
+                <li><a href="contact.php" class="active">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -52,23 +61,21 @@
                     <div class="card-icon">📍</div>
                     <h3 class="card-title">Visit Us</h3>
                     <p>Sekgwari Primary School<br>
-                        <span data-setting="school_address">Gamatlala, Limpopo</span>
-                    </p>
+                        <?php echo nl2br(htmlspecialchars($settings['school_address'] ?? 'Gamatlala, Limpopo')); ?></p>
                 </div>
 
                 <div class="card animate-fadeInUp stagger-2 text-center">
                     <div class="card-icon">📞</div>
                     <h3 class="card-title">Call Us</h3>
-                    <p>Phone: <span data-setting="school_phone">+27 XX XXX XXXX</span><br>
-                        Mon-Fri: <span data-setting="operating_hours">7:30 AM - 2:00 PM</span></p>
+                    <p>Phone: <?php echo htmlspecialchars($settings['school_phone'] ?? '+27 XX XXX XXXX'); ?><br>
+                        Mon-Fri: <?php echo htmlspecialchars($settings['operating_hours'] ?? '7:30 AM - 2:00 PM'); ?></p>
                 </div>
 
                 <div class="card animate-fadeInUp stagger-3 text-center">
                     <div class="card-icon">✉️</div>
                     <h3 class="card-title">Email Us</h3>
                     <p>General Inquiries:<br>
-                        <span data-setting="school_email">info@sekgwariprimary.co.za</span>
-                    </p>
+                        <?php echo htmlspecialchars($settings['school_email'] ?? 'info@sekgwariprimary.co.za'); ?></p>
                 </div>
             </div>
         </div>
@@ -177,7 +184,7 @@
                             </h3>
                             <p style="font-size: 1.125rem; color: var(--gray-700);">
                                 <strong>Monday - Friday</strong><br>
-                                <span data-setting="operating_hours">7:30 AM - 2:00 PM</span>
+                                <?php echo htmlspecialchars($settings['operating_hours'] ?? '7:30 AM - 2:00 PM'); ?>
                             </p>
                         </div>
                         <div>
@@ -251,26 +258,24 @@
 
             <div class="footer-section">
                 <h3>Quick Links</h3>
-                <a href="index.html">Home</a>
-                <a href="about.html">About Us</a>
-                <a href="staff.html">Our Staff</a>
-                <a href="gallery.html">Gallery</a>
-                <a href="contact.html">Contact</a>
+                <a href="index.php">Home</a>
+                <a href="about.php">About Us</a>
+                <a href="staff.php">Our Staff</a>
+                <a href="gallery.php">Gallery</a>
+                <a href="contact.php">Contact</a>
             </div>
 
             <div class="footer-section">
                 <h3>Contact Info</h3>
-                <p>📍 <span data-setting="school_address">Gamatlala, Limpopo</span></p>
-                <p>📞 <a href="#" data-setting="school_phone" style="color: inherit; text-decoration: none;">+27 XX XXX
-                        XXXX</a></p>
-                <p>✉️ <a href="#" data-setting="school_email"
-                        style="color: inherit; text-decoration: none;">info@sekgwariprimary.co.za</a></p>
+                <p>📍 <?php echo htmlspecialchars($settings['school_address'] ?? 'Gamatlala, Limpopo'); ?></p>
+                <p>📞 <?php echo htmlspecialchars($settings['school_phone'] ?? '+27 XX XXX XXXX'); ?></p>
+                <p>✉️ <?php echo htmlspecialchars($settings['school_email'] ?? 'info@sekgwariprimary.co.za'); ?></p>
             </div>
 
             <div class="footer-section">
                 <h3>School Hours</h3>
-                <p data-setting="operating_hours">Monday - Friday 7:30 AM - 2:00 PM</p>
-                <p style="margin-top: 1rem; color: #f59e0b;" data-setting="school_tagline">📚 Learning Never Stops</p>
+                <p><?php echo htmlspecialchars($settings['operating_hours'] ?? 'Monday - Friday 7:30 AM - 2:00 PM'); ?></p>
+                <p style="margin-top: 1rem; color: #f59e0b;"><?php echo htmlspecialchars($settings['school_tagline'] ?? '📚 Learning Never Stops'); ?></p>
             </div>
         </div>
 
@@ -280,17 +285,20 @@
     </footer>
 
     <!-- Mobile Menu Script -->
-    <!-- Supabase Initialization Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Load School Settings
-            await loadSchoolSettings();
-        });
-
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
             navLinks.classList.toggle('active');
         }
+
+        document.addEventListener('click', function (event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.getElementById('navLinks');
+
+            if (!nav.contains(event.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
     </script>
 </body>
 

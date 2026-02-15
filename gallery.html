@@ -1,18 +1,3 @@
-<?php
-require_once 'db_config.php';
-
-// Fetch settings
-$settings = [];
-$result = $conn->query("SELECT setting_key, setting_value FROM site_settings");
-if ($result && $result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $settings[$row['setting_key']] = $row['setting_value'];
-    }
-}
-
-// Fetch all gallery items
-$gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,6 +7,9 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
     <meta name="description" content="Explore the vibrant life at Sekgwari Primary School through our gallery">
     <title>School Gallery - Sekgwari Primary School</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
     <style>
         .gallery-grid {
             display: grid;
@@ -87,11 +75,11 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
                 <span></span>
             </div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="staff.php">Staff</a></li>
-                <li><a href="gallery.php" class="active">Gallery</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="staff.html">Staff</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -113,23 +101,10 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
                 <p class="section-subtitle">A glimpse into the daily life and special events at Sekgwari Primary</p>
             </div>
 
-            <div class="gallery-grid">
-                <?php if ($gallery_items->num_rows > 0): ?>
-                    <?php $stagger = 1; while($row = $gallery_items->fetch_assoc()): ?>
-                    <div class="gallery-item animate-fadeInUp stagger-<?php echo $stagger; ?>">
-                        <img src="<?php echo $row['image_path']; ?>" alt="<?php echo htmlspecialchars($row['caption']); ?>">
-                        <?php if ($row['caption']): ?>
-                            <div class="gallery-overlay">
-                                <p class="gallery-caption"><?php echo htmlspecialchars($row['caption']); ?></p>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    <?php $stagger = ($stagger % 6) + 1; endwhile; ?>
-                <?php else: ?>
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);">
-                        <p>Our gallery is currently being curated. Please check back later for new photos!</p>
-                    </div>
-                <?php endif; ?>
+            <div class="gallery-grid" id="galleryGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);">
+                    <p>Loading gallery photos...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -150,24 +125,26 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
 
             <div class="footer-section">
                 <h3>Quick Links</h3>
-                <a href="index.php">Home</a>
-                <a href="about.php">About Us</a>
-                <a href="staff.php">Our Staff</a>
-                <a href="gallery.php">Gallery</a>
-                <a href="contact.php">Contact</a>
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="staff.html">Our Staff</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
             </div>
 
             <div class="footer-section">
                 <h3>Contact Info</h3>
-                <p>📍 <?php echo htmlspecialchars($settings['school_address'] ?? 'Gamatlala, Limpopo'); ?></p>
-                <p>📞 <?php echo htmlspecialchars($settings['school_phone'] ?? '+27 XX XXX XXXX'); ?></p>
-                <p>✉️ <?php echo htmlspecialchars($settings['school_email'] ?? 'info@sekgwariprimary.co.za'); ?></p>
+                <p>📍 <span data-setting="school_address">Gamatlala, Limpopo</span></p>
+                <p>📞 <a href="#" data-setting="school_phone" style="color: inherit; text-decoration: none;">+27 XX XXX
+                        XXXX</a></p>
+                <p>✉️ <a href="#" data-setting="school_email"
+                        style="color: inherit; text-decoration: none;">info@sekgwariprimary.co.za</a></p>
             </div>
 
             <div class="footer-section">
                 <h3>School Hours</h3>
-                <p><?php echo htmlspecialchars($settings['operating_hours'] ?? 'Monday - Friday 7:30 AM - 2:00 PM'); ?></p>
-                <p style="margin-top: 1rem; color: #f59e0b;"><?php echo htmlspecialchars($settings['school_tagline'] ?? '📚 Learning Never Stops'); ?></p>
+                <p data-setting="operating_hours">Monday - Friday 7:30 AM - 2:00 PM</p>
+                <p style="margin-top: 1rem; color: #f59e0b;" data-setting="school_tagline">📚 Learning Never Stops</p>
             </div>
         </div>
 
@@ -177,20 +154,41 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
     </footer>
 
     <!-- Mobile Menu Script -->
+    <!-- Supabase Initialization Script -->
     <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load School Settings
+            await loadSchoolSettings();
+
+            // Load all gallery items
+            const { data: galleryItems, error } = await supabase
+                .from('gallery')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            const galleryGrid = document.getElementById('galleryGrid');
+            if (error) {
+                galleryGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);"><p>Error loading gallery items.</p></div>';
+            } else if (galleryItems && galleryItems.length > 0) {
+                galleryGrid.innerHTML = galleryItems.map((row, index) => `
+                    <div class="gallery-item animate-fadeInUp stagger-${(index % 6) + 1}">
+                        <img src="${row.image_url}" alt="${row.caption || ''}">
+                        ${row.caption ? `
+                            <div class="gallery-overlay">
+                                <p class="gallery-caption">${row.caption}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+            } else {
+                galleryGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);"><p>Our gallery is currently being curated. Please check back later for new photos!</p></div>';
+            }
+        });
+
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
             navLinks.classList.toggle('active');
         }
-
-        document.addEventListener('click', function (event) {
-            const nav = document.querySelector('nav');
-            const navLinks = document.getElementById('navLinks');
-
-            if (!nav.contains(event.target)) {
-                navLinks.classList.remove('active');
-            }
-        });
     </script>
 </body>
 

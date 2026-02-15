@@ -1,15 +1,28 @@
 <?php
 require_once 'db_config.php';
 
+// Fetch settings
+$settings = [];
+$result = $conn->query("SELECT setting_key, setting_value FROM site_settings");
+if ($result && $result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $settings[$row['setting_key']] = $row['setting_value'];
+    }
+}
+
 // Fetch stats for dashboard
 $staff_count = $conn->query("SELECT COUNT(*) FROM staff")->fetch_row()[0];
 $gallery_count = $conn->query("SELECT COUNT(*) FROM gallery")->fetch_row()[0];
+$news_count = $conn->query("SELECT COUNT(*) FROM news_events")->fetch_row()[0];
 
 // Fetch staff members
 $staff_members = $conn->query("SELECT * FROM staff ORDER BY id DESC");
 
 // Fetch gallery items
 $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
+
+// Fetch news items
+$news_items = $conn->query("SELECT * FROM news_events ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -297,25 +310,25 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" onclick="showSection('staff')">
                     <span class="icon">👥</span>
                     <span>Staff</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" onclick="showSection('contacts')">
                     <span class="icon">📞</span>
                     <span>Contacts</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" onclick="showSection('gallery')">
                     <span class="icon">🖼️</span>
                     <span>Gallery</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" onclick="showSection('news')">
                     <span class="icon">📰</span>
                     <span>News</span>
                 </a>
@@ -363,8 +376,8 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
                 <div class="stat-card">
                     <div class="stat-icon" style="color: var(--primary-navy);">📬</div>
                     <div class="stat-info">
-                        <h4>New Inquiries</h4>
-                        <div class="stat-value">0</div>
+                        <h4>School News</h4>
+                        <div class="stat-value"><?php echo $news_count; ?></div>
                     </div>
                 </div>
             </div>
@@ -536,40 +549,42 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
             </div>
         </div>
 
-        <!-- Contacts Management Section -->
+        <!-- Contact Management Section -->
         <div id="contactsSection" class="content-section" style="display: none;">
-            <div class="header-actions" style="margin-bottom: 2rem;">
-                <h2>School Information & Contacts</h2>
-                <button class="btn btn-primary">Save Changes</button>
-            </div>
-            <div class="grid grid-2">
-                <div class="card">
-                    <h3 style="margin-bottom: 1.5rem;">General Contact Info</h3>
-                    <div class="form-group">
-                        <label class="form-label">School Phone Number</label>
-                        <input type="text" class="form-input" value="+27 XX XXX XXXX">
+            <form action="update_contacts.php" method="POST">
+                <div class="header-actions" style="margin-bottom: 2rem;">
+                    <h2>School Information & Contacts</h2>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3 style="margin-bottom: 1.5rem;">General Contact Info</h3>
+                        <div class="form-group">
+                            <label class="form-label">School Phone Number</label>
+                            <input type="text" name="school_phone" class="form-input" value="<?php echo htmlspecialchars($settings['school_phone'] ?? '+27 XX XXX XXXX'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" name="school_email" class="form-input" value="<?php echo htmlspecialchars($settings['school_email'] ?? 'info@sekgwariprimary.co.za'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Physical Address</label>
+                            <textarea name="school_address" class="form-input" rows="3"><?php echo htmlspecialchars($settings['school_address'] ?? 'Gamatlala, Limpopo'); ?></textarea>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" value="info@sekgwariprimary.co.za">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Physical Address</label>
-                        <textarea class="form-input" rows="3">Gamatlala, Limpopo</textarea>
+                    <div class="card">
+                        <h3 style="margin-bottom: 1.5rem;">Operating Hours</h3>
+                        <div class="form-group">
+                            <label class="form-label">Current Hours</label>
+                            <input type="text" name="operating_hours" class="form-input" value="<?php echo htmlspecialchars($settings['operating_hours'] ?? 'Monday - Friday: 7:30 AM - 2:00 PM'); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Special Tagline (Footer/Home)</label>
+                            <input type="text" name="school_tagline" class="form-input" value="<?php echo htmlspecialchars($settings['school_tagline'] ?? '📚 Learning Never Stops'); ?>">
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <h3 style="margin-bottom: 1.5rem;">Operating Hours</h3>
-                    <div class="form-group">
-                        <label class="form-label">Monday - Friday</label>
-                        <input type="text" class="form-input" value="7:30 AM - 2:00 PM">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Special Announcement (Top Bar)</label>
-                        <input type="text" class="form-input" placeholder="e.g. 📚 Learning Never Stops">
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
 
         <!-- Gallery Management Section -->
@@ -623,6 +638,74 @@ $gallery_items = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
                         <div style="grid-column: 1 / -1; padding: 2rem; text-align: center; color: var(--gray-500);">No gallery images uploaded yet.</div>
                     <?php endif; ?>
                 </div>
+            </div>
+        <!-- News Management Section -->
+        <div id="newsSection" class="content-section" style="display: none;">
+            <div class="header-actions" style="margin-bottom: 2rem;">
+                <h2>News & Announcements</h2>
+                <button class="btn btn-primary" onclick="document.getElementById('addNewsForm').style.display='block'">Post New Announcement</button>
+            </div>
+
+            <!-- Add News Form (Hidden by default) -->
+            <div id="addNewsForm" class="card" style="display: none; margin-bottom: 2rem; border: 2px solid var(--primary-blue);">
+                <form action="add_news.php" method="POST" enctype="multipart/form-data">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="margin: 0;">New Announcement</h3>
+                        <button type="button" onclick="document.getElementById('addNewsForm').style.display='none'" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Article Title</label>
+                        <input type="text" name="title" class="form-input" required placeholder="e.g. Annual Sports Day 2026">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Event Date (Optional)</label>
+                        <input type="date" name="event_date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Content</label>
+                        <textarea name="content" class="form-input" rows="5" required placeholder="Write the announcement here..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Feature Image (Optional)</label>
+                        <input type="file" name="news_image" class="form-input" accept="image/*">
+                    </div>
+                    <div style="margin-top: 1rem; text-align: right;">
+                        <button type="submit" class="btn btn-primary">Post Announcement</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--gray-100); color: var(--gray-500);">
+                            <th style="padding: 1rem;">Date</th>
+                            <th style="padding: 1rem;">Title</th>
+                            <th style="padding: 1rem;">Content Preview</th>
+                            <th style="padding: 1rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($news_items->num_rows > 0): ?>
+                            <?php while($row = $news_items->fetch_assoc()): ?>
+                            <tr style="border-bottom: 1px solid var(--gray-100);">
+                                <td style="padding: 1rem; font-size: 0.875rem; color: var(--gray-500);">
+                                    <?php echo $row['event_date'] ? date('M d, Y', strtotime($row['event_date'])) : 'No Date'; ?>
+                                </td>
+                                <td style="padding: 1rem;"><strong><?php echo htmlspecialchars($row['title']); ?></strong></td>
+                                <td style="padding: 1rem; color: var(--gray-500);"><div style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo htmlspecialchars($row['content']); ?></div></td>
+                                <td style="padding: 1rem;">
+                                    <a href="delete_item.php?type=news&id=<?php echo $row['id']; ?>" onclick="return confirm('Delete this announcement?')" style="color: var(--accent-red); text-decoration: none; font-weight: 600;">Delete</a>
+                                </td>
+                            </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" style="padding: 2rem; text-align: center; color: var(--gray-500);">No announcements yet.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>

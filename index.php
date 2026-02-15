@@ -14,6 +14,9 @@ if ($result && $result->num_rows > 0) {
 $hero_title = isset($settings['hero_title']) && !empty($settings['hero_title']) ? $settings['hero_title'] : 'Welcome to Sekgwari Primary School';
 $hero_subtitle = isset($settings['hero_subtitle']) && !empty($settings['hero_subtitle']) ? $settings['hero_subtitle'] : 'Nurturing Excellence, Building Tomorrow\'s Leaders';
 $hero_image = isset($settings['hero_image']) ? $settings['hero_image'] : '';
+
+// Fetch latest 3 news items
+$latest_news = $conn->query("SELECT * FROM news_events ORDER BY id DESC LIMIT 3");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,10 +51,10 @@ $hero_image = isset($settings['hero_image']) ? $settings['hero_image'] : '';
             </div>
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.php" class="active">Home</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="about.php">About</a></li>
                 <li><a href="staff.php">Staff</a></li>
                 <li><a href="gallery.php">Gallery</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="contact.php">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -145,41 +148,31 @@ $hero_image = isset($settings['hero_image']) ? $settings['hero_image'] : '';
             </div>
 
             <div class="grid grid-3">
-                <div class="card animate-fadeInUp stagger-1">
-                    <div
-                        style="width: 100%; height: 200px; background: linear-gradient(135deg, #2563eb, #0ea5e9); border-radius: 12px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                        🏃</div>
-                    <div class="card-header">
-                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem;">📅 February 20, 2026</p>
-                        <h3 class="card-title">Annual Sports Day</h3>
+                <?php if ($latest_news->num_rows > 0): ?>
+                    <?php $i = 1; while($news = $latest_news->fetch_assoc()): ?>
+                    <div class="card animate-fadeInUp stagger-<?php echo $i; ?>">
+                        <?php if ($news['image_path']): ?>
+                            <img src="<?php echo $news['image_path']; ?>" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem;">
+                        <?php else: ?>
+                            <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #2563eb, #0ea5e9); border-radius: 12px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                <?php 
+                                    $icons = ['🏃', '🎓', '🎭', '📚', '🏆'];
+                                    echo $icons[array_rand($icons)];
+                                ?>
+                            </div>
+                        <?php endif; ?>
+                        <div class="card-header">
+                            <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem;">📅 <?php echo $news['event_date'] ? date('F d, Y', strtotime($news['event_date'])) : 'Latest News'; ?></p>
+                            <h3 class="card-title"><?php echo htmlspecialchars($news['title']); ?></h3>
+                        </div>
+                        <p><?php echo htmlspecialchars($news['content']); ?></p>
                     </div>
-                    <p>Join us for our upcoming annual sports day celebration! Students will compete in various athletic
-                        events. Parents and community members are welcome.</p>
-                </div>
-
-                <div class="card animate-fadeInUp stagger-2">
-                    <div
-                        style="width: 100%; height: 200px; background: linear-gradient(135deg, #10b981, #0ea5e9); border-radius: 12px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                        🎓</div>
-                    <div class="card-header">
-                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem;">📅 February 10, 2026</p>
-                        <h3 class="card-title">Academic Excellence Awards</h3>
+                    <?php $i++; endwhile; ?>
+                <?php else: ?>
+                    <div style="grid-column: 1 / -1; text-align: center; color: var(--gray-500); padding: 2rem;">
+                        Check back soon for latest updates and school news!
                     </div>
-                    <p>Celebrating our students' outstanding achievements in the recent examinations. Congratulations to
-                        all our top performers!</p>
-                </div>
-
-                <div class="card animate-fadeInUp stagger-3">
-                    <div
-                        style="width: 100%; height: 200px; background: linear-gradient(135deg, #f59e0b, #ef4444); border-radius: 12px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
-                        🎭</div>
-                    <div class="card-header">
-                        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem;">📅 February 5, 2026</p>
-                        <h3 class="card-title">Cultural Festival</h3>
-                    </div>
-                    <p>Experience the rich cultural diversity at our school through traditional dances, music, and art
-                        exhibitions from our talented students.</p>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>
@@ -192,8 +185,8 @@ $hero_image = isset($settings['hero_image']) ? $settings['hero_image'] : '';
                 <p class="section-subtitle">We welcome new students and families to become part of our vibrant learning
                     community</p>
                 <div style="margin-top: 2rem;">
-                    <a href="contact.html" class="btn btn-primary">Contact Us Today</a>
-                    <a href="about.html" class="btn btn-secondary">Learn About Us</a>
+                    <a href="contact.php" class="btn btn-primary">Contact Us Today</a>
+                    <a href="about.php" class="btn btn-secondary">Learn About Us</a>
                 </div>
             </div>
         </div>
@@ -216,24 +209,23 @@ $hero_image = isset($settings['hero_image']) ? $settings['hero_image'] : '';
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <a href="index.php">Home</a>
-                <a href="about.html">About Us</a>
+                <a href="about.php">About Us</a>
                 <a href="staff.php">Our Staff</a>
                 <a href="gallery.php">Gallery</a>
-                <a href="contact.html">Contact</a>
+                <a href="contact.php">Contact</a>
             </div>
 
             <div class="footer-section">
                 <h3>Contact Info</h3>
-                <p>📍 Gamatlala, Limpopo</p>
-                <p>📞 +27 XX XXX XXXX</p>
-                <p>✉️ info@sekgwariprimary.co.za</p>
+                <p>📍 <?php echo htmlspecialchars($settings['school_address'] ?? 'Gamatlala, Limpopo'); ?></p>
+                <p>📞 <?php echo htmlspecialchars($settings['school_phone'] ?? '+27 XX XXX XXXX'); ?></p>
+                <p>✉️ <?php echo htmlspecialchars($settings['school_email'] ?? 'info@sekgwariprimary.co.za'); ?></p>
             </div>
 
             <div class="footer-section">
                 <h3>School Hours</h3>
-                <p>Monday - Friday</p>
-                <p>7:30 AM - 2:00 PM</p>
-                <p style="margin-top: 1rem; color: #f59e0b;">📚 Learning Never Stops</p>
+                <p><?php echo htmlspecialchars($settings['operating_hours'] ?? 'Monday - Friday 7:30 AM - 2:00 PM'); ?></p>
+                <p style="margin-top: 1rem; color: #f59e0b;"><?php echo htmlspecialchars($settings['school_tagline'] ?? '📚 Learning Never Stops'); ?></p>
             </div>
         </div>
 

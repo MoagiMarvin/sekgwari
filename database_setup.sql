@@ -16,7 +16,11 @@ CREATE TABLE IF NOT EXISTS site_settings (
 INSERT IGNORE INTO site_settings (setting_key, setting_value) VALUES 
 ('hero_title', 'Welcome to Sekgwari Primary School'),
 ('hero_subtitle', 'Nurturing Excellence in Education in Gamatlala'),
-('hero_image', '');
+('hero_image', ''),
+('school_phone', '+27 XX XXX XXXX'),
+('school_email', 'info@sekgwariprimary.co.za'),
+('school_address', 'Gamatlala, Limpopo'),
+('operating_hours', 'Monday - Friday: 7:30 AM - 2:00 PM');
 
 -- Table for staff members
 CREATE TABLE IF NOT EXISTS staff (
