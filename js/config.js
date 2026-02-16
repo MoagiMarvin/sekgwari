@@ -3,7 +3,12 @@ const SUPABASE_URL = 'https://fjxdgtxxzgciorgrzbuk.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_sIcjjeZeqrZ0ENpA32DizA_aDgdKHUj';
 
 // Initialize the Supabase client
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// We use a distinct name to avoid overwriting the library reference
+if (typeof window.supabaseClient === 'undefined') {
+    window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+// Define a global variable that all scripts can use
+var supabase = window.supabaseClient;
 
 // Shared function to update school contact info across all pages
 async function loadSchoolSettings() {

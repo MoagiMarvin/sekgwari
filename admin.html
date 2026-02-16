@@ -1028,7 +1028,17 @@
         }
 
         // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check for active session
+            const { data: { session }, error: authError } = await supabase.auth.getSession();
+
+            if (authError || !session) {
+                console.log('No active session, redirecting to login...');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            console.log('Authenticated session found:', session.user.email);
             refreshCurrentSection();
 
             document.querySelectorAll('.nav-link').forEach(link => {

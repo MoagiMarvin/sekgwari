@@ -4,61 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explore the vibrant life at Sekgwari Primary School through our gallery">
-    <title>School Gallery - Sekgwari Primary School</title>
+    <meta name="description" content="Meet the dedicated staff at Sekgwari Primary School">
+    <title>Our Staff - Sekgwari Primary School</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
-    <style>
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .gallery-item {
-            position: relative;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition-normal);
-            aspect-ratio: 4/3;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.02);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-            color: white;
-            opacity: 0;
-            transition: var(--transition-normal);
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-
-        .gallery-caption {
-            font-weight: 600;
-            margin: 0;
-        }
-    </style>
 </head>
 
 <body>
@@ -77,8 +28,8 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="staff.html">Staff</a></li>
-                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="staff.html" class="active">Staff</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
@@ -87,23 +38,37 @@
     <!-- Hero Section -->
     <section class="hero" style="min-height: 50vh;">
         <div class="hero-content">
-            <div class="school-badge animate-fadeIn">🖼️ Visual Journey</div>
-            <h1 class="animate-fadeInUp">Our School Gallery</h1>
-            <p class="animate-fadeInUp stagger-1">Capturing precious moments and achievements</p>
+            <div class="school-badge animate-fadeIn">👥 Our Team</div>
+            <h1 class="animate-fadeInUp">Meet Our Dedicated Staff</h1>
+            <p class="animate-fadeInUp stagger-1">Passionate educators committed to your child's success</p>
         </div>
     </section>
 
-    <!-- Gallery Section -->
+    <!-- Teaching Staff Section -->
     <section class="bg-white">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Latest Photos</h2>
-                <p class="section-subtitle">A glimpse into the daily life and special events at Sekgwari Primary</p>
+                <h2 class="section-title">Our Teaching Staff</h2>
+                <p class="section-subtitle">Dedicated professionals making a difference every day</p>
             </div>
 
-            <div class="gallery-grid" id="galleryGrid">
+            <div class="grid grid-3" id="staffGrid">
                 <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);">
-                    <p>Loading gallery photos...</p>
+                    <p>Loading our dedicated staff members...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Our Team Section -->
+    <section class="bg-gray">
+        <div class="container text-center">
+            <div style="max-width: 700px; margin: 0 auto;">
+                <h2 class="section-title">Join Our Team</h2>
+                <p class="section-subtitle">Are you a passionate educator looking to make a difference? We're always
+                    looking for talented individuals to join our school family.</p>
+                <div style="margin-top: 2rem;">
+                    <a href="contact.html" class="btn btn-primary">Get In Touch</a>
                 </div>
             </div>
         </div>
@@ -154,35 +119,47 @@
         </div>
     </footer>
 
-    <!-- Mobile Menu Script -->
-    <!-- Supabase Initialization Script -->
+    <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             // Load School Settings
             await loadSchoolSettings();
 
-            // Load all gallery items
-            const { data: galleryItems, error } = await supabase
-                .from('gallery')
-                .select('*')
-                .order('created_at', { ascending: false });
+            // Load Staff Members
+            try {
+                const { data: staffMembers, error } = await supabase
+                    .from('staff')
+                    .select('*')
+                    .order('id', { ascending: true });
 
-            const galleryGrid = document.getElementById('galleryGrid');
-            if (error) {
-                galleryGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);"><p>Error loading gallery items.</p></div>';
-            } else if (galleryItems && galleryItems.length > 0) {
-                galleryGrid.innerHTML = galleryItems.map((row, index) => `
-                    <div class="gallery-item animate-fadeInUp stagger-${(index % 6) + 1}">
-                        <img src="${row.image_url}" alt="${row.caption || ''}">
-                        ${row.caption ? `
-                            <div class="gallery-overlay">
-                                <p class="gallery-caption">${row.caption}</p>
+                const staffGrid = document.getElementById('staffGrid');
+                if (error) throw error;
+
+                if (staffMembers && staffMembers.length > 0) {
+                    staffGrid.innerHTML = staffMembers.map((row, index) => {
+                        const imageHtml = row.image_url
+                            ? `<img src="${row.image_url}" alt="${row.name}" class="staff-image">`
+                            : `<img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%232563eb%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22white%22 font-size=%2280%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E👨‍🏫%3C/text%3E%3C/svg%3E" alt="Fallback Icon" class="staff-image">`;
+
+                        return `
+                            <div class="staff-card animate-fadeInUp stagger-${(index % 6) + 1}">
+                                <div class="staff-image-wrapper">
+                                    ${imageHtml}
+                                </div>
+                                <h3 class="staff-name">${row.name}</h3>
+                                <span class="staff-position">${row.position || ''}</span>
+                                <p class="staff-qualification">${row.qualification || ''}</p>
+                                <p class="staff-message">"${row.message || 'Committed to excellence in education.'}"</p>
+                                <p class="staff-grade">${row.grade || ''}</p>
                             </div>
-                        ` : ''}
-                    </div>
-                `).join('');
-            } else {
-                galleryGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);"><p>Our gallery is currently being curated. Please check back later for new photos!</p></div>';
+                        `;
+                    }).join('');
+                } else {
+                    staffGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);"><p>No staff members listed at the moment. Please check back soon!</p></div>';
+                }
+            } catch (err) {
+                console.error('Error loading staff:', err);
+                document.getElementById('staffGrid').innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);"><p>Unable to load staff members right now.</p></div>';
             }
         });
 

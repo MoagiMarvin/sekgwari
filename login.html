@@ -113,12 +113,37 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
     <script>
-        // Supabase configuration will be added here
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Temporary redirect for demonstration
-            window.location.href = 'admin.html';
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const submitBtn = e.target.querySelector('button');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Signing in...';
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) {
+                    alert('Login failed: ' + error.message);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Sign In';
+                } else {
+                    console.log('Login successful');
+                    window.location.href = 'admin.html';
+                }
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                alert('An unexpected error occurred. Please check your internet connection.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign In';
+            }
         });
     </script>
 </body>
