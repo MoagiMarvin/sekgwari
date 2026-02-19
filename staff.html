@@ -52,9 +52,25 @@
                 <p class="section-subtitle">Dedicated professionals making a difference every day</p>
             </div>
 
-            <div class="grid grid-3" id="staffGrid">
-                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);">
-                    <p>Loading our dedicated staff members...</p>
+            <div class="staff-hierarchy-container">
+                <!-- Principal Section -->
+                <div id="principalSection" class="management-single animate-fadeInUp"></div>
+
+                <!-- Vice Principal Section -->
+                <div id="vicePrincipalSection" class="management-single animate-fadeInUp stagger-1"></div>
+
+                <!-- HOD Section -->
+                <div class="staff-hierarchy-row">
+                    <h3 class="section-title" style="font-size: 1.5rem; margin-bottom: 2rem;">School Management (HODs)
+                    </h3>
+                    <div id="hodGrid" class="staff-two-col"></div>
+                </div>
+
+                <!-- Teachers & Clerks Section -->
+                <div class="staff-hierarchy-row">
+                    <h3 class="section-title" style="font-size: 1.5rem; margin-bottom: 2rem;">Our Educators & Support
+                        Staff</h3>
+                    <div id="generalStaffGrid" class="staff-two-col"></div>
                 </div>
             </div>
         </div>
@@ -148,34 +164,69 @@
                     .select('*')
                     .order('id', { ascending: true });
 
-                const staffGrid = document.getElementById('staffGrid');
                 if (error) throw error;
 
                 if (staffMembers && staffMembers.length > 0) {
-                    staffGrid.innerHTML = staffMembers.map((row, index) => {
-                        const imageHtml = row.image_url
-                            ? `<img src="${row.image_url}" alt="${row.name}" class="staff-image">`
+                    const sections = {
+                        principal: [],
+                        vicePrincipal: [],
+                        hods: [],
+                        general: []
+                    };
+
+                    staffMembers.forEach(staff => {
+                        const pos = (staff.position || '').toLowerCase();
+                        if (pos.includes('principal') && !pos.includes('vice') && !pos.includes('deputy')) {
+                            sections.principal.push(staff);
+                        } else if (pos.includes('vice principal') || pos.includes('deputy principal')) {
+                            sections.vicePrincipal.push(staff);
+                        } else if (pos.includes('hod') || pos.includes('head of department')) {
+                            sections.hods.push(staff);
+                        } else {
+                            sections.general.push(staff);
+                        }
+                    });
+
+                    const createCard = (staff, index, staggerBase) => {
+                        const imageHtml = staff.image_url
+                            ? `<img src="${staff.image_url}" alt="${staff.name}" class="staff-image">`
                             : `<img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%231e3a8a%22 width=%22200%22 height=%22200%22/%3E%3Crect fill=%22url(%23pattern)%22 width=%22100%25%22 height=%22100%25%22/%3E%3Cdefs%3E%3Cpattern id=%22pattern%22 width=%2220%22 height=%2220%22 patternUnits=%22userSpaceOnUse%22%3E%3Ccircle cx=%222%22 cy=%222%22 r=%221%22 fill=%22rgba(255,255,255,0.1)%22/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d=%22M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z%22 fill=%22white%22 transform=%22scale(5) translate(4, 4)%22/%3E%3C/svg%3E" alt="Fallback Icon" class="staff-image">`;
 
                         return `
-                            <div class="staff-card animate-fadeInUp stagger-${(index % 6) + 1}">
+                            <div class="staff-card animate-fadeInUp stagger-${(index % 6) + staggerBase}">
                                 <div class="staff-image-wrapper">
                                     ${imageHtml}
                                 </div>
-                                <h3 class="staff-name">${row.name}</h3>
-                                <span class="staff-position">${row.position || ''}</span>
-                                <p class="staff-qualification">${row.qualification || ''}</p>
-                                <p class="staff-message">"${row.message || 'Committed to excellence in education.'}"</p>
-                                <p class="staff-grade">${row.grade || ''}</p>
+                                <h3 class="staff-name">${staff.name}</h3>
+                                <span class="staff-position">${staff.position || ''}</span>
+                                <p class="staff-qualification">${staff.qualification || ''}</p>
+                                <p class="staff-message">"${staff.message || 'Committed to excellence in education.'}"</p>
+                                <p class="staff-grade">${staff.grade || ''}</p>
                             </div>
                         `;
-                    }).join('');
+                    };
+
+                    // Render sections
+                    if (sections.principal.length > 0) {
+                        document.getElementById('principalSection').innerHTML = createCard(sections.principal[0], 0, 1);
+                    }
+                    if (sections.vicePrincipal.length > 0) {
+                        document.getElementById('vicePrincipalSection').innerHTML = createCard(sections.vicePrincipal[0], 0, 2);
+                    }
+
+                    document.getElementById('hodGrid').innerHTML = sections.hods.map((s, i) => createCard(s, i, 3)).join('');
+                    document.getElementById('generalStaffGrid').innerHTML = sections.general.map((s, i) => createCard(s, i, 4)).join('');
+
+                    // Hide headers if empty
+                    if (sections.hods.length === 0) document.getElementById('hodGrid').parentElement.style.display = 'none';
+                    if (sections.general.length === 0) document.getElementById('generalStaffGrid').parentElement.style.display = 'none';
+
                 } else {
-                    staffGrid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);"><p>No staff members listed at the moment. Please check back soon!</p></div>';
+                    document.querySelector('.staff-hierarchy-container').innerHTML = '<div style="text-align: center; padding: 4rem; color: var(--gray-500);"><p>No staff members listed at the moment. Please check back soon!</p></div>';
                 }
             } catch (err) {
                 console.error('Error loading staff:', err);
-                document.getElementById('staffGrid').innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--gray-500);"><p>Unable to load staff members right now.</p></div>';
+                document.querySelector('.staff-hierarchy-container').innerHTML = '<div style="text-align: center; padding: 4rem; color: var(--gray-500);"><p>Unable to load staff members right now.</p></div>';
             }
         });
 

@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS staff (
     qualification VARCHAR(255),
     grade VARCHAR(50),
     message TEXT,
-    image_path VARCHAR(255),
+    image_url VARCHAR(255),
     display_order INT DEFAULT 0
 );
 
@@ -40,14 +40,14 @@ CREATE TABLE IF NOT EXISTS news_events (
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     event_date DATE,
-    image_path VARCHAR(255),
+    image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table for gallery images
 CREATE TABLE IF NOT EXISTS gallery (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    image_path VARCHAR(255) NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
     caption VARCHAR(255),
     category VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
