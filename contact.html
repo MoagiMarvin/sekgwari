@@ -17,7 +17,7 @@
     <nav>
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-icon">🎓</div>
+                <div class="logo-icon"></div>
                 <span>Sekgwari Primary</span>
             </div>
             <div class="menu-toggle" onclick="toggleMenu()">
@@ -38,7 +38,7 @@
     <!-- Hero Section -->
     <section class="hero" style="min-height: 50vh;">
         <div class="hero-content">
-            <div class="school-badge animate-fadeIn">📞 Get In Touch</div>
+            <div class="school-badge animate-fadeIn">Get In Touch</div>
             <h1 class="animate-fadeInUp">Contact Us</h1>
             <p class="animate-fadeInUp stagger-1">We'd love to hear from you</p>
         </div>
@@ -49,7 +49,13 @@
         <div class="container">
             <div class="grid grid-3">
                 <div class="card animate-fadeInUp stagger-1 text-center">
-                    <div class="card-icon">📍</div>
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
                     <h3 class="card-title">Visit Us</h3>
                     <p>Sekgwari Primary School<br>
                         <span data-setting="school_address">Gamatlala, Limpopo</span>
@@ -57,14 +63,27 @@
                 </div>
 
                 <div class="card animate-fadeInUp stagger-2 text-center">
-                    <div class="card-icon">📞</div>
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.29-2.29a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                            </path>
+                        </svg>
+                    </div>
                     <h3 class="card-title">Call Us</h3>
                     <p>Phone: <span data-setting="school_phone">+27 XX XXX XXXX</span><br>
                         Mon-Fri: <span data-setting="operating_hours">7:30 AM - 2:00 PM</span></p>
                 </div>
 
                 <div class="card animate-fadeInUp stagger-3 text-center">
-                    <div class="card-icon">✉️</div>
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                        </svg>
+                    </div>
                     <h3 class="card-title">Email Us</h3>
                     <p>General Inquiries:<br>
                         <span data-setting="school_email">info@sekgwariprimary.co.za</span>
@@ -174,7 +193,17 @@
                 <div class="card text-center">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; text-align: left;">
                         <div>
-                            <h3 style="color: var(--primary-navy); margin-bottom: 1rem; font-size: 1.25rem;">📅 Weekdays
+                            <h3
+                                style="color: var(--primary-navy); margin-bottom: 1rem; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Weekdays
                             </h3>
                             <p style="font-size: 1.125rem; color: var(--gray-700);">
                                 <strong>Monday - Friday</strong><br>
@@ -182,7 +211,18 @@
                             </p>
                         </div>
                         <div>
-                            <h3 style="color: var(--primary-navy); margin-bottom: 1rem; font-size: 1.25rem;">🚫 Weekends
+                            <h3
+                                style="color: var(--primary-navy); margin-bottom: 1rem; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    <line x1="10" y1="16" x2="14" y2="16"></line>
+                                </svg>
+                                Weekends
                             </h3>
                             <p style="font-size: 1.125rem; color: var(--gray-700);">
                                 <strong>Saturday - Sunday</strong><br>
@@ -244,9 +284,25 @@
                 <p>Nurturing excellence in education and building tomorrow's leaders through quality teaching and strong
                     values.</p>
                 <div class="social-links">
-                    <a href="#" class="social-link">📘</a>
-                    <a href="#" class="social-link">📷</a>
-                    <a href="#" class="social-link">🐦</a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg></a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg></a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z">
+                            </path>
+                        </svg></a>
                 </div>
             </div>
 
@@ -300,7 +356,7 @@
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Sending...';
                     formStatus.style.display = 'block';
-                    formStatus.textContent = '⏱️ Processing your request...';
+                    formStatus.textContent = 'Processing your request...';
                     formStatus.style.color = 'var(--primary-blue)';
 
                     const formData = new FormData(contactForm);
@@ -317,12 +373,12 @@
 
                     if (error) {
                         console.error('Submission error:', error);
-                        formStatus.textContent = '❌ Error sending message. Please try again.';
+                        formStatus.textContent = 'Error sending message. Please try again.';
                         formStatus.style.color = '#ef4444';
                         submitBtn.disabled = false;
                         submitBtn.textContent = 'Send Message';
                     } else {
-                        formStatus.textContent = '✅ Message sent successfully! We will get back to you soon.';
+                        formStatus.textContent = 'Message sent successfully! We will get back to you soon.';
                         formStatus.style.color = '#10b981';
                         contactForm.reset();
                         submitBtn.textContent = 'Message Sent';

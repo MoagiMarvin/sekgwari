@@ -17,7 +17,7 @@
     <nav>
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-icon">🎓</div>
+                <div class="logo-icon"></div>
                 <span>Sekgwari Primary</span>
             </div>
             <div class="menu-toggle" onclick="toggleMenu()">
@@ -63,8 +63,16 @@
                 </div>
                 <div class="animate-slideInRight">
                     <div
-                        style="width: 100%; height: 400px; background: linear-gradient(135deg, #2563eb, #0ea5e9); border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
-                        🏫
+                        style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary-navy), var(--primary-blue)); border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; color: white; box-shadow: var(--shadow-xl); position: relative; overflow: hidden; border: 4px solid var(--white);">
+                        <div
+                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px; opacity: 0.3;">
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            style="position: relative; z-index: 1;">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -76,8 +84,18 @@
         <div class="container">
             <div class="grid grid-2">
                 <div class="card animate-fadeInUp stagger-1"
-                    style="background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%); color: white;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                    style="background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-blue) 100%); color: white; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 15px 15px; opacity: 0.3;">
+                    </div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem; position: relative; z-index: 1;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="12" r="6"></circle>
+                            <circle cx="12" cy="12" r="2"></circle>
+                        </svg>
+                    </div>
                     <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">Our Vision</h2>
                     <p style="font-size: 1.125rem; line-height: 1.8;">
                         To be a leading primary school that nurtures academic excellence, personal growth, and community
@@ -86,8 +104,18 @@
                 </div>
 
                 <div class="card animate-fadeInUp stagger-2"
-                    style="background: linear-gradient(135deg, #10b981 0%, #0ea5e9 100%); color: white;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                    style="background: linear-gradient(135deg, var(--accent-gold) 0%, #ea580c 100%); color: white; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 15px 15px; opacity: 0.3;">
+                    </div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem; position: relative; z-index: 1;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m12 14 4-4 4 4-4 4-4-4Z"></path>
+                            <path d="M4 14l4-4 4 4-4 4-4-4Z"></path>
+                            <path d="m12 6 4-4 4 4-4 4-4-4Z"></path>
+                        </svg>
+                    </div>
                     <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">Our Mission</h2>
                     <p style="font-size: 1.125rem; line-height: 1.8;">
                         To provide quality education that empowers learners with knowledge, skills, and values necessary
@@ -214,9 +242,25 @@
                 <p>Nurturing excellence in education and building tomorrow's leaders through quality teaching and strong
                     values.</p>
                 <div class="social-links">
-                    <a href="#" class="social-link">📘</a>
-                    <a href="#" class="social-link">📷</a>
-                    <a href="#" class="social-link">🐦</a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg></a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg></a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z">
+                            </path>
+                        </svg></a>
                 </div>
             </div>
 

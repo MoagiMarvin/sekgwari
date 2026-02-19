@@ -1,6 +1,6 @@
 // Supabase Configuration
 const SUPABASE_URL = 'https://fjxdgtxxzgciorgrzbuk.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_sIcjjeZeqrZ0ENpA32DizA_aDgdKHUj';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqeGRndHh4emdjaW9yZ3J6YnVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExMzAxNzUsImV4cCI6MjA4NjcwNjE3NX0.I0_XxRck3aWYyl3NTj5yFVMIgVXspL9mTgySBvTeHlw';
 
 // Initialize the Supabase client
 // We use a distinct name to avoid overwriting the library reference

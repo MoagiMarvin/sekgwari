@@ -17,7 +17,7 @@
     <nav>
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-icon">🎓</div>
+                <div class="logo-icon"></div>
                 <span>Sekgwari Primary</span>
             </div>
             <div class="menu-toggle" onclick="toggleMenu()">
@@ -38,7 +38,7 @@
     <!-- Hero Section -->
     <section class="hero" style="min-height: 50vh;">
         <div class="hero-content">
-            <div class="school-badge animate-fadeIn">👥 Our Team</div>
+            <div class="school-badge animate-fadeIn">Our Team</div>
             <h1 class="animate-fadeInUp">Meet Our Dedicated Staff</h1>
             <p class="animate-fadeInUp stagger-1">Passionate educators committed to your child's success</p>
         </div>
@@ -82,9 +82,25 @@
                 <p>Nurturing excellence in education and building tomorrow's leaders through quality teaching and strong
                     values.</p>
                 <div class="social-links">
-                    <a href="#" class="social-link">📘</a>
-                    <a href="#" class="social-link">📷</a>
-                    <a href="#" class="social-link">🐦</a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg></a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg></a>
+                    <a href="#" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z">
+                            </path>
+                        </svg></a>
                 </div>
             </div>
 
@@ -139,7 +155,7 @@
                     staffGrid.innerHTML = staffMembers.map((row, index) => {
                         const imageHtml = row.image_url
                             ? `<img src="${row.image_url}" alt="${row.name}" class="staff-image">`
-                            : `<img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%232563eb%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22white%22 font-size=%2280%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E👨‍🏫%3C/text%3E%3C/svg%3E" alt="Fallback Icon" class="staff-image">`;
+                            : `<img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%231e3a8a%22 width=%22200%22 height=%22200%22/%3E%3Crect fill=%22url(%23pattern)%22 width=%22100%25%22 height=%22100%25%22/%3E%3Cdefs%3E%3Cpattern id=%22pattern%22 width=%2220%22 height=%2220%22 patternUnits=%22userSpaceOnUse%22%3E%3Ccircle cx=%222%22 cy=%222%22 r=%221%22 fill=%22rgba(255,255,255,0.1)%22/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d=%22M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z%22 fill=%22white%22 transform=%22scale(5) translate(4, 4)%22/%3E%3C/svg%3E" alt="Fallback Icon" class="staff-image">`;
 
                         return `
                             <div class="staff-card animate-fadeInUp stagger-${(index % 6) + 1}">
